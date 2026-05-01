@@ -1,0 +1,28 @@
+name: setup-agentplane
+description: Install the AgentPlane CLI in GitHub Actions.
+inputs:
+  version:
+    description: AgentPlane version to install. Use a plain semver value such as 0.4.1.
+    required: false
+    default: "0.4.1"
+  verify:
+    description: Run an agentplane --version smoke check after installation.
+    required: false
+    default: "true"
+runs:
+  using: composite
+  steps:
+    - name: Install AgentPlane
+      shell: bash
+      run: |
+        set -euo pipefail
+        version="${{ inputs.version }}"
+        version="${version#v}"
+        tag="v${version}"
+        tmp_dir="$(mktemp -d)"
+        trap 'rm -rf "$tmp_dir"' EXIT INT TERM
+        curl -fsSL "https://github.com/basilisk-labs/agentplane/releases/download/${tag}/install.sh" -o "$tmp_dir/install.sh"
+        sh "$tmp_dir/install.sh"
+        if [ "${{ inputs.verify }}" = "true" ]; then
+          agentplane --version | grep -Fx "${version}"
+        fi
