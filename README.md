@@ -8,6 +8,15 @@
 
 **Topics:** `agentplane` `github-actions` `cli` `installer`
 
+## Discovery chips
+
+- `agentplane`
+- `github-actions`
+- `cli`
+- `installer`
+- `npm`
+- `standalone`
+
 GitHub Action to install the AgentPlane CLI in GitHub Actions runners using
 official standalone release artifacts.
 
