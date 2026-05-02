@@ -8,17 +8,21 @@
 
 **Topics:** `agentplane` `github-actions` `cli` `installer`
 
-## Discovery chips
+`setup-agentplane` is the fastest and most reliable way to add AgentPlane to CI.
 
-- `agentplane`
-- `github-actions`
-- `cli`
-- `installer`
-- `npm`
-- `standalone`
+It saves you from manual binary downloads, checksum errors, and cross-platform conditionals.
+If your pipeline already uses GitHub Actions, this action gives a deterministic install step and a built-in smoke check.
 
-GitHub Action to install the AgentPlane CLI in GitHub Actions runners using
-official standalone release artifacts.
+## Why this exists
+
+- Reproducible installs across runners and OSes.
+- Fast onboarding for repositories that already follow agentic workflows.
+- Reduced boilerplate in CI recipes.
+- Predictable rollback by pinning exact versions.
+
+## How it works
+
+The action downloads the requested standalone AgentPlane artifact, checks SHA-256 against `SHA256SUMS` (when available), extracts it, and adds `agentplane` to PATH.
 
 ## Usage
 
@@ -28,13 +32,13 @@ official standalone release artifacts.
     version: 0.4.1
 ```
 
-Use a major tag (`@v0`) for reproducible installs and pin to exact versions when full immutability is required.
+Use `@v0` for automatic patch/minor refresh behavior, and pin to a concrete version when strict reproducibility is required.
 
 ## Inputs
 
 | Name | Default | Description |
 | --- | --- | --- |
-| `version` | `0.4.1` | AgentPlane semver to install (e.g. `0.4.1`). |
+| `version` | `0.4.1` | AgentPlane semver to install (for example `0.4.1`). |
 | `verify` | `true` | Run `agentplane --version` after installation. |
 
 ## Outputs
@@ -52,22 +56,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: basilisk-labs/setup-agentplane@v0
+      - name: Install AgentPlane
+        uses: basilisk-labs/setup-agentplane@v0
         with:
           version: 0.4.1
           verify: true
-```
 
-## Smoke check
-
-```yaml
-agentplane --version
+      - name: Validate
+        run: |
+          agentplane --version
+          agentplane quickstart
 ```
 
 ## Security note
 
-Use a fixed `version` and leave `verify: true` to ensure `agentplane --version` smoke checks pass.
+Pin versions for immutable environments and keep `verify: true` in production.
 
-### License
+## Next step
+
+After installation run:
+
+```bash
+agentplane quickstart
+```
+
+to generate repository-level guidance and align contributors quickly.
+
+## License
 
 This action repository is MIT-licensed.
