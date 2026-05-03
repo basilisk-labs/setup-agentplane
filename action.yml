@@ -1,20 +1,14 @@
 name: setup-agentplane
-description: Install and verify the AgentPlane CLI in GitHub Actions.
-author: 'Basilisk Labs'
-branding:
-  icon: terminal
-  color: purple
-permissions:
-  contents: read
+description: Install the AgentPlane CLI in GitHub Actions.
 inputs:
   version:
-    description: AgentPlane version to install. Use a plain semver value such as 0.4.1.
+    description: AgentPlane version to install. Use a plain semver value such as 0.4.2.
     required: false
-    default: '0.4.1'
+    default: "0.4.2"
   verify:
     description: Run an agentplane --version smoke check after installation.
     required: false
-    default: 'true'
+    default: "true"
 runs:
   using: composite
   steps:
@@ -22,53 +16,51 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        version="${{ inputs.version }}"
+        version="${inputs.version}"
         version="${version#v}"
-        tag="v${version}"
-        repo="basilisk-labs/agentplane"
         tmp_dir="$(mktemp -d)"
         trap 'rm -rf "$tmp_dir"' EXIT INT TERM
-
-        case "$RUNNER_OS-$RUNNER_ARCH" in
+        case "${RUNNER_OS}-${RUNNER_ARCH}" in
           macOS-ARM64)
-            asset_url="https://github.com/${repo}/releases/download/${tag}/agentplane-${tag}-darwin-arm64.tar.gz"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-darwin-arm64.tar.gz"
+            asset_sha256="8bc19b2a29a48a350d283153156644e8128cd05e49cd1a02513659a5aa95759b"
             ;;
           macOS-X64)
-            asset_url="https://github.com/${repo}/releases/download/${tag}/agentplane-${tag}-darwin-x64.tar.gz"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-darwin-x64.tar.gz"
+            asset_sha256="a538cc7d91ff55fbf2c1dbc969782500d8a5c5ed1e0b9a50e2530616957f2083"
             ;;
           Linux-ARM64)
-            asset_url="https://github.com/${repo}/releases/download/${tag}/agentplane-${tag}-linux-arm64.tar.gz"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-linux-arm64.tar.gz"
+            asset_sha256="ea322de9be2b17142f1401da550a94f2bb90ee875638d6421a509c2f00b5fa46"
             ;;
           Linux-X64)
-            asset_url="https://github.com/${repo}/releases/download/${tag}/agentplane-${tag}-linux-x64.tar.gz"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-linux-x64.tar.gz"
+            asset_sha256="0482e411160f07ee703d75efa35d9e520a6a22cf9c3fac95025381b5d70a7c09"
             ;;
           Windows-X64)
-            asset_url="https://github.com/${repo}/releases/download/${tag}/agentplane-${tag}-win32-x64.zip"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-win32-x64.zip"
+            asset_sha256="2050625d6c9032020decc1805c02d9f25a4a9b8b5ec3434a12bbaa37532df5cd"
             ;;
           *)
             echo "Unsupported runner: ${RUNNER_OS}-${RUNNER_ARCH}" >&2
             exit 2
             ;;
         esac
-
-        archive="$tmp_dir/asset"
-        asset_name="${asset_url##*/}"
-        install_dir="$tmp_dir/agentplane"
-        mkdir -p "$install_dir"
-        curl -fsSL --retry 3 --retry-all-errors "${asset_url}" -o "${archive}"
-        sums_url="https://github.com/${repo}/releases/download/${tag}/SHA256SUMS"
-        expected_sha="$(curl -fsSL --retry 3 --retry-all-errors "${sums_url}" | awk -v name="$asset_name" '$2 == name { print $1 }')"
-        actual_sha="$(sha256sum "${archive}" | awk '{print $1}')"
-        if [ -n "${expected_sha}" ] && [ "${actual_sha}" != "${expected_sha}" ]; then
-          echo "Checksum mismatch for ${asset_name}" >&2
+        archive="${tmp_dir}/${asset_url##*/}"
+        install_dir="${tmp_dir}/agentplane"
+        mkdir -p "${install_dir}"
+        curl -fsSL "${asset_url}" -o "${archive}"
+        actual_sha256="$(shasum -a 256 "${archive}" | awk '{print $1}')"
+        if [ "${actual_sha256}" != "${asset_sha256}" ]; then
+          echo "agentplane archive checksum mismatch" >&2
           exit 2
         fi
-        if [[ "$archive" == *.zip ]]; then
+        if [[ "${archive}" == *.zip ]]; then
           powershell -NoProfile -Command "Expand-Archive -LiteralPath '${archive}' -DestinationPath '${install_dir}' -Force"
         else
-          tar -xzf "$archive" -C "$install_dir"
+          tar -xzf "${archive}" -C "${install_dir}"
         fi
-        echo "$install_dir/bin" >> "$GITHUB_PATH"
+        echo "${install_dir}/bin" >> "$GITHUB_PATH"
         if [ "${{ inputs.verify }}" = "true" ]; then
-          "$install_dir/bin/agentplane" --version | grep -Fx "$version"
+          "${install_dir}/bin/agentplane" --version | grep -Fx "${version}"
         fi
