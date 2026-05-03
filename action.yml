@@ -23,23 +23,23 @@ runs:
         case "${RUNNER_OS}-${RUNNER_ARCH}" in
           macOS-ARM64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-darwin-arm64.tar.gz"
-            asset_sha256="8bc19b2a29a48a350d283153156644e8128cd05e49cd1a02513659a5aa95759b"
+            asset_sha256="7c7ba2f08ddd1a660fc3c39de3bd76285df67f53bd04ed3477f3a90a5df09af8"
             ;;
           macOS-X64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-darwin-x64.tar.gz"
-            asset_sha256="a538cc7d91ff55fbf2c1dbc969782500d8a5c5ed1e0b9a50e2530616957f2083"
+            asset_sha256="49372fff89c536e16529be32689278e4f63238763b691ef1a8c168c66fe19bcb"
             ;;
           Linux-ARM64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-linux-arm64.tar.gz"
-            asset_sha256="ea322de9be2b17142f1401da550a94f2bb90ee875638d6421a509c2f00b5fa46"
+            asset_sha256="3a3727afd12a88836be3a3bd4164446af1b7f5c301dae4a5744a016fcc2c6ec8"
             ;;
           Linux-X64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-linux-x64.tar.gz"
-            asset_sha256="0482e411160f07ee703d75efa35d9e520a6a22cf9c3fac95025381b5d70a7c09"
+            asset_sha256="80374f4529da46b530834dcc8203f7f5ce360d88a65eb7f9b8e2079f9427d971"
             ;;
           Windows-X64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.2/agentplane-v0.4.2-win32-x64.zip"
-            asset_sha256="2050625d6c9032020decc1805c02d9f25a4a9b8b5ec3434a12bbaa37532df5cd"
+            asset_sha256="35916139a8fc0bba0f0a1fdf12ef5a0af5cb390201ede81a1a3f182c85ab6969"
             ;;
           *)
             echo "Unsupported runner: ${RUNNER_OS}-${RUNNER_ARCH}" >&2
