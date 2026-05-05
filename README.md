@@ -7,12 +7,12 @@
 Install AgentPlane in GitHub Actions.
 
 ```yaml
-- uses: basilisk-labs/setup-agentplane@v0.4.3
+- uses: basilisk-labs/setup-agentplane@v0.4.4
   with:
-    version: 0.4.3
+    version: 0.4.4
 ```
 
-This composite action installs AgentPlane from the official standalone archives and validates each standalone bundled-runtime archive checksum before adding `agentplane` to PATH.
+This composite action installs AgentPlane from the official Bun single-file executable archives and validates each archive checksum before adding `agentplane` to PATH.
 
 ## Capabilities
 
@@ -25,9 +25,9 @@ This composite action installs AgentPlane from the official standalone archives 
 
 ```yaml
 steps:
-  - uses: basilisk-labs/setup-agentplane@v0.4.3
+  - uses: basilisk-labs/setup-agentplane@v0.4.4
     with:
-      version: 0.4.3
+      version: 0.4.4
 ```
 
 ## Smoke check
