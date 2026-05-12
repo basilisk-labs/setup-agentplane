@@ -2,9 +2,9 @@ name: setup-agentplane
 description: Install the AgentPlane CLI in GitHub Actions.
 inputs:
   version:
-    description: AgentPlane version to install. Use a plain semver value such as 0.4.4.
+    description: AgentPlane version to install. Use a plain semver value such as 0.5.0.
     required: false
-    default: "0.4.4"
+    default: "0.5.0"
   verify:
     description: Run an agentplane --version smoke check after installation.
     required: false
@@ -22,24 +22,24 @@ runs:
         trap 'rm -rf "$tmp_dir"' EXIT INT TERM
         case "${RUNNER_OS}-${RUNNER_ARCH}" in
           macOS-ARM64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.4/agentplane-bun-v0.4.4-darwin-arm64.tar.gz"
-            asset_sha256="7bb81d0b66b7f59a62ecbb5e83fa67f6f8344ac65b9f39447d76c2448c0b44cf"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.5.0/agentplane-bun-v0.5.0-darwin-arm64.tar.gz"
+            asset_sha256="0f899a8369fb0b5fa06335e9b40d0d38c013e943aad003045ed486c6f19c6bd0"
             ;;
           macOS-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.4/agentplane-bun-v0.4.4-darwin-x64.tar.gz"
-            asset_sha256="379438dbd3c3afab6d476211f0a956e9d4682269e398c7557cd46ca62f16bb93"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.5.0/agentplane-bun-v0.5.0-darwin-x64.tar.gz"
+            asset_sha256="82b88ab41952e555771eaebd9982788d5e6313b3cd5bd236a3c6039930d20b1a"
             ;;
           Linux-ARM64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.4/agentplane-bun-v0.4.4-linux-arm64.tar.gz"
-            asset_sha256="4eb8eaaa4a47e2d64d24e0c3a872387830de0c8b88c4ebbef5ba343e4432565e"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.5.0/agentplane-bun-v0.5.0-linux-arm64.tar.gz"
+            asset_sha256="1775af840e599297e4f5455166fbeeadc60c93a34a975a311b2f5305e4695412"
             ;;
           Linux-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.4/agentplane-bun-v0.4.4-linux-x64.tar.gz"
-            asset_sha256="02bd9968525c0097b99ad42f806082a57ed6d4d393143f7dab2267ad1f9fc0eb"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.5.0/agentplane-bun-v0.5.0-linux-x64.tar.gz"
+            asset_sha256="b4c5855600ed04112a538b5d66a372bce51e9fc6ac398ce40a55de790e23dfca"
             ;;
           Windows-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.4.4/agentplane-bun-v0.4.4-win32-x64.zip"
-            asset_sha256="8942f314d98176a6ccafa2e724e6af9affab7a6ce836570cb32d65574570d746"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.5.0/agentplane-bun-v0.5.0-win32-x64.zip"
+            asset_sha256="cd7dbd6b31cb0cd8d2bc6578daf08c3c344c55f3d13faaffdbc8cb6baaebe265"
             ;;
           *)
             echo "Unsupported runner: ${RUNNER_OS}-${RUNNER_ARCH}" >&2
