@@ -2,9 +2,9 @@ name: setup-agentplane
 description: Install the AgentPlane CLI in GitHub Actions.
 inputs:
   version:
-    description: AgentPlane version to install. Use a plain semver value such as 0.7.8.
+    description: AgentPlane version to install. Use a plain semver value such as 0.6.28.
     required: false
-    default: "0.7.8"
+    default: "0.6.28"
   verify:
     description: Run an agentplane --version smoke check after installation.
     required: false
@@ -14,38 +14,32 @@ runs:
   steps:
     - name: Install AgentPlane
       shell: bash
-      env:
-        AGENTPLANE_VERSION: ${{ inputs.version }}
-        AGENTPLANE_VERIFY: ${{ inputs.verify }}
       run: |
         set -euo pipefail
-        version="${AGENTPLANE_VERSION#v}"
-        if [ "${version}" != "0.7.8" ]; then
-          echo "This action installs 0.7.8; use the matching action tag for another version." >&2
-          exit 2
-        fi
+        version="${inputs.version}"
+        version="${version#v}"
         tmp_dir="$(mktemp -d)"
         trap 'rm -rf "$tmp_dir"' EXIT INT TERM
         case "${RUNNER_OS}-${RUNNER_ARCH}" in
           macOS-ARM64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.8/agentplane-bun-v0.7.8-darwin-arm64.tar.gz"
-            asset_sha256="b035e5fa33fa0d4d9df927cd003292b6e275f6ff16661fbed40ade31d39eab34"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.6.28/agentplane-bun-v0.6.28-darwin-arm64.tar.gz"
+            asset_sha256="fe508639bbc4cc00978798854c237f78e2bcc06f558baf06ef44cc473dbf28d5"
             ;;
           macOS-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.8/agentplane-bun-v0.7.8-darwin-x64.tar.gz"
-            asset_sha256="8e3f04c19931f50928cdfe918f5fcd0741b299e5cc202c4657edd3eb68ce553e"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.6.28/agentplane-bun-v0.6.28-darwin-x64.tar.gz"
+            asset_sha256="cc67764948fc22e9c8dbfd26663e8db52c96667f84b6b3f8afebcb2703b666d5"
             ;;
           Linux-ARM64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.8/agentplane-bun-v0.7.8-linux-arm64.tar.gz"
-            asset_sha256="6d046a5a0e1fa3eac636c2f23e23c16467909dee183af98af8c4bfd02943bd4d"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.6.28/agentplane-bun-v0.6.28-linux-arm64.tar.gz"
+            asset_sha256="4f7f99da930b9a81ba319d5ba41048349cb22ce3ab43b857dd5ed252b95b853f"
             ;;
           Linux-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.8/agentplane-bun-v0.7.8-linux-x64.tar.gz"
-            asset_sha256="754c4397500be0fdbde6ba352b46d1d099b5ef4261e45e23af62c041f8f15b5e"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.6.28/agentplane-bun-v0.6.28-linux-x64.tar.gz"
+            asset_sha256="ae8e764e3782ddf4af1eb964dcb62206baac81427a3a1f20a4c30d71a7f54be2"
             ;;
           Windows-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.8/agentplane-bun-v0.7.8-win32-x64.zip"
-            asset_sha256="4d1c4045d1ceddcd6cb9c2b926c1f071090f9415560bf3d084f0c90e0177a00d"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.6.28/agentplane-bun-v0.6.28-win32-x64.zip"
+            asset_sha256="910b1397f9409968a499d7cf3583917e43007fc33f181c2a347b0be8877c70b3"
             ;;
           *)
             echo "Unsupported runner: ${RUNNER_OS}-${RUNNER_ARCH}" >&2
@@ -53,19 +47,20 @@ runs:
             ;;
         esac
         archive="${tmp_dir}/${asset_url##*/}"
+        install_dir="${tmp_dir}/agentplane"
+        mkdir -p "${install_dir}"
         curl -fsSL "${asset_url}" -o "${archive}"
         actual_sha256="$(shasum -a 256 "${archive}" | awk '{print $1}')"
         if [ "${actual_sha256}" != "${asset_sha256}" ]; then
           echo "agentplane archive checksum mismatch" >&2
           exit 2
         fi
-        install_dir="$(mktemp -d "${RUNNER_TEMP:?}/agentplane.XXXXXX")"
         if [[ "${archive}" == *.zip ]]; then
           powershell -NoProfile -Command "Expand-Archive -LiteralPath '${archive}' -DestinationPath '${install_dir}' -Force"
         else
           tar -xzf "${archive}" -C "${install_dir}"
         fi
-        if [ "${AGENTPLANE_VERIFY}" = "true" ]; then
+        echo "${install_dir}/bin" >> "$GITHUB_PATH"
+        if [ "${{ inputs.verify }}" = "true" ]; then
           "${install_dir}/bin/agentplane" --version | grep -Fx "${version}"
         fi
-        echo "${install_dir}/bin" >> "$GITHUB_PATH"
