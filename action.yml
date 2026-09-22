@@ -2,9 +2,9 @@ name: setup-agentplane
 description: Install the AgentPlane CLI in GitHub Actions.
 inputs:
   version:
-    description: AgentPlane version to install. Use a plain semver value such as 0.7.10.
+    description: AgentPlane version to install. Use a plain semver value such as 0.7.11.
     required: false
-    default: "0.7.10"
+    default: "0.7.11"
   verify:
     description: Run an agentplane --version smoke check after installation.
     required: false
@@ -20,32 +20,32 @@ runs:
       run: |
         set -euo pipefail
         version="${AGENTPLANE_VERSION#v}"
-        if [ "${version}" != "0.7.10" ]; then
-          echo "This action installs 0.7.10; use the matching action tag for another version." >&2
+        if [ "${version}" != "0.7.11" ]; then
+          echo "This action installs 0.7.11; use the matching action tag for another version." >&2
           exit 2
         fi
         tmp_dir="$(mktemp -d)"
         trap 'rm -rf "$tmp_dir"' EXIT INT TERM
         case "${RUNNER_OS}-${RUNNER_ARCH}" in
           macOS-ARM64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.10/agentplane-bun-v0.7.10-darwin-arm64.tar.gz"
-            asset_sha256="180c7eb6034461bdaef1c69ffa3e08748bf20af688aac650fe6330523abe94e9"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-darwin-arm64.tar.gz"
+            asset_sha256="b09e1a3c2877af833aa04a9934acfcf3385be7f53d9e5aed989ddc75615b6e76"
             ;;
           macOS-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.10/agentplane-bun-v0.7.10-darwin-x64.tar.gz"
-            asset_sha256="36aa36ac8be8c10cbafeaf047dbe31a7a4b329c35703d3b61853844bdb5a7753"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-darwin-x64.tar.gz"
+            asset_sha256="ee6d4af1f497b7975203bf9d8b7b4036f91fa706357bb333ba1fb93f670b13b3"
             ;;
           Linux-ARM64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.10/agentplane-bun-v0.7.10-linux-arm64.tar.gz"
-            asset_sha256="83ee2dd1a64252c59e14046c7e006f499f0e93711a18f58d1ca0211f74a72ff2"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-linux-arm64.tar.gz"
+            asset_sha256="6c883c178cccd4c07b1e58c192b89bbee86df2196b762b6c6c9d24edb86663fc"
             ;;
           Linux-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.10/agentplane-bun-v0.7.10-linux-x64.tar.gz"
-            asset_sha256="3ead102818c5f4d496719688162580c1633eb305ba231bf5612de3a99434b45d"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-linux-x64.tar.gz"
+            asset_sha256="f92ab943c8b84793f277d4abf66936f33930f5d9a264d392f20986575e582b1e"
             ;;
           Windows-X64)
-            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.10/agentplane-bun-v0.7.10-win32-x64.zip"
-            asset_sha256="ce7d648bf39150ac0818771728a2b0682eb620bfeefed5f63bce033b9c092658"
+            asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-win32-x64.zip"
+            asset_sha256="53ce023224d3824ddb6def49594636f9c45170fc7eaf584df1264333455097b6"
             ;;
           *)
             echo "Unsupported runner: ${RUNNER_OS}-${RUNNER_ARCH}" >&2
