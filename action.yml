@@ -29,23 +29,23 @@ runs:
         case "${RUNNER_OS}-${RUNNER_ARCH}" in
           macOS-ARM64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-darwin-arm64.tar.gz"
-            asset_sha256="b09e1a3c2877af833aa04a9934acfcf3385be7f53d9e5aed989ddc75615b6e76"
+            asset_sha256="48e5c4ae320e69af0ee60f46c29dc9a0680ffd78c7fd5431a222631624d74cff"
             ;;
           macOS-X64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-darwin-x64.tar.gz"
-            asset_sha256="ee6d4af1f497b7975203bf9d8b7b4036f91fa706357bb333ba1fb93f670b13b3"
+            asset_sha256="9b80f24ecc90262fe97d1c256fb27b413e22808785ec2b15653634cd7ca0c808"
             ;;
           Linux-ARM64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-linux-arm64.tar.gz"
-            asset_sha256="6c883c178cccd4c07b1e58c192b89bbee86df2196b762b6c6c9d24edb86663fc"
+            asset_sha256="0687e7083db660381cc8f80023c41b6e0e1cafc6fa9b7e6cff5d27aed65cf8ff"
             ;;
           Linux-X64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-linux-x64.tar.gz"
-            asset_sha256="f92ab943c8b84793f277d4abf66936f33930f5d9a264d392f20986575e582b1e"
+            asset_sha256="31d8141078e84777c22f4f9458e12efd5e2e1586a09debad2ad5c510ab77202c"
             ;;
           Windows-X64)
             asset_url="https://github.com/basilisk-labs/agentplane/releases/download/v0.7.11/agentplane-bun-v0.7.11-win32-x64.zip"
-            asset_sha256="53ce023224d3824ddb6def49594636f9c45170fc7eaf584df1264333455097b6"
+            asset_sha256="cd1412930e43de80c5c96ccba40e7e3b1358da703fd7d301061ed2b84aebc1b7"
             ;;
           *)
             echo "Unsupported runner: ${RUNNER_OS}-${RUNNER_ARCH}" >&2
